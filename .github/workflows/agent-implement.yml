@@ -1,0 +1,62 @@
+# 常時稼働型ループ: Issue に agent:ready（または agent:report-only）が付いたら、Claude Code が作業する
+# 認証: Claude のサブスクリプション（Max）のトークン（Secrets の CLAUDE_CODE_OAUTH_TOKEN）
+# 台帳: docs/loops/README.md
+name: agent-implement
+
+on:
+  issues:
+    types: [labeled]
+
+# 同じ Issue に対しては同時に1本だけ
+concurrency:
+  group: agent-issue-${{ github.event.issue.number }}
+  cancel-in-progress: false
+
+jobs:
+  work:
+    if: github.event.label.name == 'agent:ready' || github.event.label.name == 'agent:report-only'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: write
+      pull-requests: write
+      issues: write
+      id-token: write
+      actions: read
+    env:
+      GH_TOKEN: ${{ github.token }}
+      ISSUE: ${{ github.event.issue.number }}
+      MODE: ${{ github.event.label.name }}
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v5
+        with:
+          node-version-file: .node-version
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: 作業中にする
+        run: gh issue edit "$ISSUE" --add-label agent:working
+      - uses: anthropics/claude-code-action@v1
+        with:
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          prompt: |
+            Issue #${{ github.event.issue.number }} を Skill work-issue の手順で進めて（ラベル: ${{ github.event.label.name }}）。
+            - agent:report-only なら、調べて Issue に報告するだけ。コードは変えない
+            - agent:ready なら、ブランチ agent/issue-${{ github.event.issue.number }} で実装し、PR を出す
+            - 終わったら、作業記録を Issue にコメントする（docs/loops/state.md の形）
+          claude_args: |
+            --max-turns 40
+            --allowedTools "Read,Grep,Glob,Edit,Write,Bash(pnpm *),Bash(git *),Bash(gh issue view *),Bash(gh issue comment *),Bash(gh issue edit *),Bash(gh pr create *),Bash(gh pr view *)"
+      - name: 止まった理由を残す（失敗・上限・時間切れ）
+        if: failure() || cancelled()
+        run: |
+          gh issue comment "$ISSUE" --body "🤖 作業記録
+          - 止まった理由: ループが失敗・上限・時間切れで止まりました（$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID）
+          - 次にやること: 人が実行記録を見て、Issue の書き方かハーネスを直す"
+          gh issue edit "$ISSUE" --add-label needs-human
+      - name: 作業中を外す
+        if: always()
+        run: gh issue edit "$ISSUE" --remove-label agent:working --remove-label "$MODE"

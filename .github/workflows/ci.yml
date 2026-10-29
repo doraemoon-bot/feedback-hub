@@ -3,7 +3,8 @@ name: CI
 on:
   pull_request:
   push:
-    branches: [main]
+    # エージェントのブランチは push でも走らせる（GITHUB_TOKEN で作った PR では CI が自動で走らないため）
+    branches: [main, "agent/**"]
 
 permissions:
   contents: read

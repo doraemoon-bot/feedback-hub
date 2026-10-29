@@ -1,0 +1,31 @@
+# 任せるレベル 3（自動反映）: agent:auto-merge が付いた低リスクの PR を、必須チェックが通ったら自動でマージする
+# 既定では動かない。リポジトリ変数 AUTO_MERGE_ENABLED を true にし、リポジトリ設定の「Allow auto-merge」を有効にしたときだけ
+name: agent-auto-merge
+
+on:
+  pull_request:
+    types: [labeled, opened, synchronize]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  enable:
+    if: vars.AUTO_MERGE_ENABLED == 'true' && contains(github.event.pull_request.labels.*.name, 'agent:auto-merge') && contains(github.event.pull_request.labels.*.name, 'risk:low')
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      GH_TOKEN: ${{ github.token }}
+      PR: ${{ github.event.pull_request.number }}
+    steps:
+      - name: ドキュメントだけの変更か確かめる
+        run: |
+          files=$(gh pr diff "$PR" --repo "$GITHUB_REPOSITORY" --name-only)
+          echo "$files"
+          if echo "$files" | grep -vqE '(^docs/|\.md$)'; then
+            echo "ドキュメント以外の変更があるので、自動マージしません"
+            exit 0
+          fi
+          gh pr merge "$PR" --repo "$GITHUB_REPOSITORY" --auto --squash
+          echo "必須チェックが通ったら自動でマージされます"
