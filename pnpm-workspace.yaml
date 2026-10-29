@@ -1,0 +1,6 @@
+packages:
+  - apps/*
+  - packages/*
+# esbuild（tsx・drizzle-kit が使う）だけ、インストール時のスクリプト実行を許可する
+allowBuilds:
+  esbuild: true
