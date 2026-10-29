@@ -1,0 +1,28 @@
+{
+  "description": "feedback-hub の Hook（中身は scripts/agent/hooks/ で Claude Code と共有）",
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"$(git rev-parse --show-toplevel)/scripts/agent/hooks/format.mjs\""
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"$(git rev-parse --show-toplevel)/scripts/agent/hooks/verify-on-stop.mjs\"",
+            "timeout": 300,
+            "statusMessage": "pnpm check で確かめています"
+          }
+        ]
+      }
+    ]
+  }
+}

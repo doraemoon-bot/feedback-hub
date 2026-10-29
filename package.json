@@ -15,12 +15,14 @@
     "e2e": "playwright test",
     "db:generate": "pnpm --filter @feedback-hub/db generate",
     "db:seed": "pnpm --filter @feedback-hub/db seed",
-    "check": "pnpm lint && pnpm typecheck && pnpm test"
+    "check": "pnpm lint && pnpm typecheck && pnpm deps && pnpm test",
+    "deps": "depcruise apps packages --config .dependency-cruiser.cjs"
   },
   "devDependencies": {
     "@biomejs/biome": "2.6.3",
     "@playwright/test": "1.64.1",
     "@types/node": "^22.13.0",
+    "dependency-cruiser": "18.7.0",
     "turbo": "2.11.10",
     "typescript": "6.0.3"
   }
