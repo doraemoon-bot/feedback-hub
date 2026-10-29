@@ -1,0 +1,39 @@
+name: エージェントに任せるタスク
+description: 完了条件と範囲をはっきり書いて、エージェント（または人）に渡すタスク
+labels: ["triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        エージェントに任せるには「機械で確かめられる完了条件」と「触ってよい範囲」が要る。
+        書けない場合は、そのまま出してよい（仕分けで `needs-human` になる）。
+  - type: textarea
+    id: background
+    attributes:
+      label: 背景・何に困っているか
+    validations:
+      required: true
+  - type: textarea
+    id: done
+    attributes:
+      label: 完了条件（機械で確かめられる形で）
+      description: 例「同じ人が投票を取り消しても、票が 0 より小さくならない（テストで確かめる）」「pnpm check が通る」
+      placeholder: "- [ ] ..."
+  - type: textarea
+    id: scope
+    attributes:
+      label: 触ってよい範囲 / 触ってはいけない範囲
+      placeholder: "触ってよい: apps/api/src/services/votes.ts と apps/api/test/\n触ってはいけない: DB スキーマ"
+  - type: dropdown
+    id: level
+    attributes:
+      label: 任せるレベル
+      options:
+        - "報告のみ（調べて報告。コードは変えない）"
+        - "修正案の PR（検証を通した PR まで。マージは人）"
+        - "自動反映（低リスクのみ。検証を通れば自動でマージ）"
+  - type: textarea
+    id: stop
+    attributes:
+      label: 止まって人に聞いてほしい条件
+      placeholder: "例: DB スキーマの変更が必要になったら / 既存のテストを変える必要が出たら"
