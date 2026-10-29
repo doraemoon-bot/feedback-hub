@@ -14,7 +14,9 @@
 ## 常時稼働型の流れ
 
 ```
-Issue（triage） ─毎朝の Routine─▶ agent:ready / agent:report-only / needs-human
+Issue（triage） ─毎朝の Routine─▶ 推奨をコメント（＋ risk ラベル）／ needs-human
+                                      │
+                    人が推奨を見て agent:ready / agent:report-only を付ける
                                       │
               ラベルが付いたら GitHub Actions（agent-implement）
                                       ▼
@@ -39,7 +41,7 @@ Issue（triage） ─毎朝の Routine─▶ agent:ready / agent:report-only / n
 
 | ループ | タイプ | 責任者 | 任せるレベル | 上限 | 完了の証拠 | 止まる条件 | 止まった理由の記録先 | 戻し方 | 実行履歴 |
 |---|---|---|---|---|---|---|---|---|---|
-| 毎朝の仕分け | 常時稼働（Routine） | @doraemoon-bot | 1 | 1回10件、1日の実行回数はプランの上限 | Issue のコメントとラベル | 10件扱った / 仕分け待ちがない | Routine の実行記録 | ラベルとコメントを手で戻す | claude.ai/code/routines |
+| 毎朝の仕分け | 常時稼働（Routine） | @doraemoon-bot | 1 | 1回10件、1日の実行回数はプランの上限 | Issue の推奨コメントと risk・needs-human ラベル | 10件扱った / 仕分け待ちがない | Routine の実行記録 | ラベルとコメントを手で戻す | claude.ai/code/routines |
 | Issue の実装 | 常時稼働（Actions） | @doraemoon-bot | 2（3は低リスクのみ） | 1件30分・40ターン、同じ Issue は同時に1本 | PR の本文（証拠）・CI | PR を出した / needs-human / 上限 | Issue の作業記録コメント、Actions の実行記録 | PR を閉じる・ブランチを消す（マージ前は main に影響なし） | Actions の `agent-implement` |
 | 自動マージ | 常時稼働（Actions） | @doraemoon-bot | 3 | `risk:low` かつ docs・md だけの変更 | 必須チェックの通過 | 条件に合わない PR は何もしない | Actions の実行記録 | `git revert` で取り消す PR | Actions の `agent-auto-merge` |
 | PR の見張り | 時間起動（/loop） | 起動した人 | 2 | 10分ごと、最大7日 | CI が通り、未対応の指摘がない | 上の状態 / 同じ失敗を2回直せない | PR のコメント | push した修正を revert | セッションの履歴 |

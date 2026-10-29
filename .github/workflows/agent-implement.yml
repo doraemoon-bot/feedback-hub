@@ -1,4 +1,5 @@
-# 常時稼働型ループ: Issue に agent:ready（または agent:report-only）が付いたら、Claude Code が作業する
+# 常時稼働型ループ: 人が Issue に agent:ready（または agent:report-only）を付けたら、Claude Code が作業する
+# （claude-code-action はボットが起こしたイベントでは動かない。任せるかどうかは人がラベルで決める）
 # 認証: Claude のサブスクリプション（Max）のトークン（Secrets の CLAUDE_CODE_OAUTH_TOKEN）
 # 台帳: docs/loops/README.md
 name: agent-implement

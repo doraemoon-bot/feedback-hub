@@ -16,10 +16,16 @@
 - `risk:low`: ドキュメントだけ、テストを足すだけ、表示の文言だけ
 - `agent:auto-merge` は `risk:low` にだけ付けてよい
 
+## 誰がラベルを付けるか
+
+- 仕分け役（エージェント）が付けてよいのは `risk:*` と `needs-human` だけ
+- `agent:ready` / `agent:report-only` / `agent:auto-merge` は**人が付ける**（任せるかどうかの判断は人。付けた時点で自動実装のループが動く。ボットが付けたラベルでは動かない）
+
 ## 仕分けで書くコメントの形
 
 ```
-🤖 仕分け: agent:ready（risk:low）
+🤖 仕分け: 推奨 agent:ready（risk:low）
 理由: 完了条件がテストで確かめられ、範囲が votes サービスだけ
 足りない情報: なし
+→ 任せてよければ、人が agent:ready を付けてください
 ```

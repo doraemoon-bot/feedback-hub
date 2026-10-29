@@ -11,13 +11,14 @@ Claude Code の Routines（Anthropic のクラウドで、決まった時刻に 
    - 頻度: 平日の毎朝 9:00
    - リポジトリ: doraemoon-bot/feedback-hub
    - プロンプト: 下の「プロンプト」をそのまま
-3. 作ったら一度手で実行して、Issue にコメントとラベルが付くことを確かめる
+3. 作ったら一度手で実行して、Issue に推奨のコメントと risk ラベルが付くことを確かめる
 
 ## プロンプト
 
 ```
 Skill triage の手順で、triage ラベルの付いた Issue を仕分けて。
 - 判定は docs/loops/triage-rules.md に従う。迷ったら needs-human
+- agent:ready / agent:report-only は推奨としてコメントに書くだけで、ラベルは付けない（人が付ける）
 - コードは変えない。ブランチも PR も作らない
 - 最後に、仕分けた件数・判定ごとの Issue 番号・人が今日見るべきものを報告する
 ```
