@@ -4,6 +4,8 @@
 
 > これは [ai-dev-tutorial](https://github.com/doraemoon-bot) の題材リポジトリ。AI エージェント（Claude Code / Codex）のハーネスとループを組み込み済みで、段階タグ（`stage-0`〜）でその組み立てを追体験できる。
 
+AI エージェント（Claude Code / Codex）と一緒に開発するための仕組み（ハーネス・ループ・CI/CD）の全体像は [docs/harness.md](docs/harness.md)。
+
 ## 構成
 
 ```
