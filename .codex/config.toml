@@ -1,0 +1,7 @@
+# feedback-hub の Codex 設定（プロジェクトを「信頼」したときだけ読み込まれる）
+# 書き込みは作業ディレクトリの中だけ、ネットワークなし。サンドボックスの外に出る操作は承認を求める
+sandbox_mode = "workspace-write"
+approval_policy = "on-request"
+
+[sandbox_workspace_write]
+network_access = false

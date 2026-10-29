@@ -15,8 +15,9 @@
     "e2e": "playwright test",
     "db:generate": "pnpm --filter @feedback-hub/db generate",
     "db:seed": "pnpm --filter @feedback-hub/db seed",
-    "check": "pnpm lint && pnpm typecheck && pnpm deps && pnpm test",
-    "deps": "depcruise apps packages --config .dependency-cruiser.cjs"
+    "check": "pnpm lint && pnpm typecheck && pnpm deps && pnpm test && pnpm test:harness",
+    "deps": "depcruise apps packages --config .dependency-cruiser.cjs",
+    "test:harness": "node --test \"scripts/agent/**/*.test.mjs\""
   },
   "devDependencies": {
     "@biomejs/biome": "2.6.3",

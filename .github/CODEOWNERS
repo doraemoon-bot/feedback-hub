@@ -1,0 +1,9 @@
+# ハーネス（AI の権限・検証・ループの仕組み）は、ハーネス担当のレビューを必須にする
+# 本来はチーム（@org/harness-owners など）を書く。この題材では1人で回すので自分のアカウント
+/.github/                  @doraemoon-bot
+/scripts/agent/            @doraemoon-bot
+/.claude/settings.json     @doraemoon-bot
+/.codex/                   @doraemoon-bot
+/AGENTS.md                 @doraemoon-bot
+/docs/loops/               @doraemoon-bot
+/packages/db/migrations/   @doraemoon-bot

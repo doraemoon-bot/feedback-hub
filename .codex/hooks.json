@@ -1,6 +1,18 @@
 {
   "description": "feedback-hub の Hook（中身は scripts/agent/hooks/ で Claude Code と共有）",
   "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash|Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"$(git rev-parse --show-toplevel)/scripts/agent/hooks/guard.mjs\"",
+            "statusMessage": "操作を確認しています"
+          }
+        ]
+      }
+    ],
     "PostToolUse": [
       {
         "matcher": "Edit|Write",
