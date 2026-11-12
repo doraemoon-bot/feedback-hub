@@ -10,8 +10,8 @@
   },
   "dependencies": {
     "@feedback-hub/shared": "workspace:*",
-    "hono": "4.13.14",
-    "next": "16.4.3",
+    "hono": "4.13.17",
+    "next": "16.4.5",
     "react": "19.3.1",
     "react-dom": "19.3.1"
   },
