@@ -20,11 +20,11 @@
     "test:harness": "node --test \"scripts/agent/**/*.test.mjs\""
   },
   "devDependencies": {
-    "@biomejs/biome": "2.6.3",
-    "@playwright/test": "1.64.1",
+    "@biomejs/biome": "2.6.8",
+    "@playwright/test": "1.65.1",
     "@types/node": "^22.13.0",
-    "dependency-cruiser": "18.7.0",
-    "turbo": "2.11.10",
+    "dependency-cruiser": "18.7.2",
+    "turbo": "2.11.11",
     "typescript": "6.0.3"
   }
 }
